@@ -1,5 +1,7 @@
 # Ansible Role: AEM Security Test
 
+[![Build Status](https://travis-ci.org/aemdesign/ansible-role-aem-security-test.svg?branch=master)](https://travis-ci.org/aemdesign/ansible-role-aem-security-test)
+
 This role tests AEM Dispatcher instance for specific Security patterns.
 > This role was developed as part of
 > [AEM.Design](http://aem.design/)
