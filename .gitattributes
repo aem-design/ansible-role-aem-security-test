@@ -1,0 +1,4 @@
+# Declare text files with unix file ending
+*.yml text eol=lf
+*.yaml text eol=lf
+

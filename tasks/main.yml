@@ -1,0 +1,6 @@
+---
+
+- name: aem security test
+  debug:
+    msg:
+      - "testing"
