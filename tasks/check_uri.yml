@@ -1,0 +1,88 @@
+---
+- name: testing {{ item.0.url if item.0.url is defined else item.1.url }}
+  set_fact:
+    uri_info: "{{item}}"
+    task_comment: "{{ item.0.name | default('Category') }} - {{ item.1.name | default('Test') }} {{ item.0.url if item.0.url is defined else item.1.url }}"
+    test_output_content: "{{ item.1.content is defined }}"
+    test_output_status: "{{ item.1.content is not defined }}"
+    test_content: "{{ item.1.content | default('') }}"
+
+
+- name: test_content
+  debug:
+    msg:
+      - "{{ uri_info }}"
+
+### ACCESS URL
+
+- name: access test url {{ task_comment }}
+  uri:
+    url: "{{ uri_info.0.url if uri_info.0.url is defined else uri_info.1.url }}"
+    return_content: "{{ uri_info.1.return_content | default('no') }}"
+    timeout: "{{ uri_info.1.timeout | default(5) }}"
+    method: "{{ uri_info.1.method | default('GET') }}"
+    headers: "{{ uri_info.1.headers | default({}) }}"
+    body: "{{ uri_info.1.body | default() }}"
+    status_code: "{{ item.1.valid_status_code | default(200) }}"
+    user: "{{ uri_info.0.user if uri_info.0.user is defined else uri_info.1.user|default('') }}"
+    password: "{{ uri_info.0.password if item.0.password is defined else uri_info.1.password|default('')  }}"
+  register: test_output
+  ignore_errors: true
+  tags:
+    - test
+
+### TEST STATUS OF URI
+
+- name: PASSED - {{ task_comment }}
+  debug:
+    msg:
+      - "PASSED"
+      - "Url ({{ test_output.url }}) access test passed, expected status ({{ uri_info.1.valid_status_code }}) got ({{ test_output.status }})"
+  when:
+    - test_output_status
+    - test_output.status|int == uri_info.1.valid_status_code|int
+  tags:
+    - print_action
+
+- name: FAILED - {{ task_comment }}
+  fail:
+    msg:
+      - "FAILED"
+      - "Url ({{ test_output.url }}) access test failed, expected status ({{ uri_info.1.valid_status_code }}) got ({{ test_output.status }})"
+      - "{{ test_output }}"
+  when:
+    - test_output_status
+    - test_output.status|int != uri_info.1.valid_status_code|int
+  tags:
+    - print_action
+
+### TEST CONTENT OF URI
+
+- name: PASSED - {{ task_comment }}
+  debug:
+    msg:
+      - "PASSED"
+      - "Url ({{ test_output.url }}) content test passed, found content ({{ uri_info.1.content }})"
+  when:
+    - test_output_content
+    - test_output.content.find(test_content) != -1
+  tags:
+    - print_action
+
+
+- name: FAILED - {{ task_comment }}
+  fail:
+    msg:
+      - "FAILED"
+      - "Url ({{ test_output.url }}) access test failed, could not find content ({{ uri_info.1.content }}) in output"
+      - "{{ test_output }}"
+  when:
+    - test_output_content
+    - test_output.content.find(test_content) == -1
+  tags:
+    - print_action
+
+- name: test output
+  debug:
+    msg:
+      - "{{ test_output }}"

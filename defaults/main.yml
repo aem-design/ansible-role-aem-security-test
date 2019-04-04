@@ -1,2 +1,333 @@
 ---
 # defaults file for aem-security-test
+
+testtarget_url: "http://localhost:4502"
+is_admin_password_default: false
+admin_user: admin
+admin_password: admin
+type:
+  - author
+  - publish
+  - dispatcher
+  - writetest
+
+
+test_group_list:
+  - name: "Projects Access"
+    type:
+      - author
+    authenticated: true
+    category: "General"
+    url: "{{ testtarget_url }}/projects.html"
+    tests:
+      - {user: "admin", password: "{{ admin_password }}", valid_status_code: "{{ 200 if (is_admin_password_default) else 401 }}"}
+      - {user: "author", password: "author", valid_status_code: 401}
+      - {user: "jdoe@geometrixx.info", password: "jdoe", valid_status_code: 401}
+      - {user: "replication-receiver", password: "replication-receiver", valid_status_code: 401}
+      - {user: "aparker@geometrixx.info", password: "aparker", valid_status_code: 401}
+  - name: "Admin Consoles - General"
+    type:
+      - author
+    authenticated: true
+    category: "General"
+    user: "{{ admin_user }}"
+    password: "{{ admin_user }}"
+    tests:
+      - {name: "CRXDE Lite", url: "{{ testtarget_url }}/crx/de/index.jsp", valid_status_code: 200}
+      - {name: "CRX Explorer", url: "{{ testtarget_url }}/crx/explorer/index.jsp", valid_status_code: 200}
+      - {name: "Package Manager", url: "{{ testtarget_url }}/crx/packmgr/index.jsp", valid_status_code: 200}
+      - {name: "Package Share Explorer", url: "{{ testtarget_url }}/crx/packageshare/", valid_status_code: 200}
+      - {name: "Backup Console", url: "{{ testtarget_url }}/libs/granite/backup/content/admin.html", valid_status_code: 200}
+      - {name: "Web Console", url: "{{ testtarget_url }}/system/console/configMgr", valid_status_code: 200}
+      - {name: "OSGi Bundles Console", url: "{{ testtarget_url }}/system/console/bundles", valid_status_code: 200}
+      - {name: "Query Debugger Tool", url: "{{ testtarget_url }}/libs/cq/search/content/querydebug.html", valid_status_code: 200}
+      - {name: "Search UI", url: "{{ testtarget_url }}/crx/explorer/ui/search.jsp?Path=&Query=", valid_status_code: 200}
+      - {name: "Display Client Libraries in use by Component", url: "{{ testtarget_url }}/libs/granite/ui/content/dumplibs.html", valid_status_code: 200}
+      - {name: "JVM Memory Usage", url: "{{ testtarget_url }}/system/console/memoryusage", valid_status_code: 200}
+      - {name: "JVM Runtime Properties", url: "{{ testtarget_url }}/system/console/jmx/java.lang%3Atype%3DRuntime", valid_status_code: 200}
+      - {name: "Performance profiler", url: "{{ testtarget_url }}/system/console/profiler", valid_status_code: 200}
+      - {name: "Disk Performance Benchmarking", url: "{{ testtarget_url }}/system/console/diskbenchmark", valid_status_code: 200}
+      - {name: "Product Version and License Information", url: "{{ testtarget_url }}/system/console/productinfo", valid_status_code: 200}
+      - {name: "Node Type Administration Console", url: "{{ testtarget_url }}/crx/explorer/nodetypes/index.jsp", valid_status_code: 200}
+      - {name: "Maintenance Tools", url: "{{ testtarget_url }}/system/console/jmx/com.adobe.granite%3Atype%3DRepository", valid_status_code: 200}
+      - {name: "Maven Dependency Finder", url: "{{ testtarget_url }}/system/console/depfinder", valid_status_code: 200}
+      - {name: "Login", url: "{{ testtarget_url }}/libs/granite/core/content/login.html", valid_status_code: 200}
+
+  - name: "Admin Consoles - Classic UI"
+    type:
+      - author
+    category: "General"
+    authenticated: true
+    user: "{{ admin_user }}"
+    password: "{{ admin_user }}"
+    tests:
+      - {name: "Classic UI Home Page Redirected", url: "{{ testtarget_url }}/welcome.html", valid_status_code: 200}
+      - {name: "Classic UI Home Page", url: "{{ testtarget_url }}/libs/cq/core/content/welcome.html", valid_status_code: 200}
+      - {name: "Siteadmin Console", url: "{{ testtarget_url }}/siteadmin", valid_status_code: 200}
+      - {name: "DAM Console [Digital Asset Management]", url: "{{ testtarget_url }}/damadmin", valid_status_code: 200}
+      - {name: "MCM Console [Marketing Campaign Console]", url: "{{ testtarget_url }}/mcmadmin#/content/dashboard", valid_status_code: 200}
+      - {name: "User Notifications Inbox", url: "{{ testtarget_url }}/inbox", valid_status_code: 200}
+      - {name: "Users and Groups Management Console", url: "{{ testtarget_url }}/useradmin", valid_status_code: 200}
+      - {name: "Tools Console [Configuration]", url: "{{ testtarget_url }}/miscadmin", valid_status_code: 200}
+      - {name: "Tagging Console", url: "{{ testtarget_url }}/tagging", valid_status_code: 200}
+      - {name: "Workflows Console", url: "{{ testtarget_url }}/libs/cq/workflow/content/console.html", valid_status_code: 200}
+      - {name: "Launches Console", url: "{{ testtarget_url }}/libs/launches/content/admin.html", valid_status_code: 200}
+      - {name: "Replication Console", url: "{{ testtarget_url }}/etc/replication.html", valid_status_code: 200}
+      - {name: "Reports Console", url: "{{ testtarget_url }}/miscadmin#/etc/reports", valid_status_code: 200}
+      - {name: "User Reports", url: "{{ testtarget_url }}/etc/reports/userreport.html", valid_status_code: 200}
+      - {name: "Author Activity Audit", url: "{{ testtarget_url }}/etc/reports/auditreport.html", valid_status_code: 200}
+      - {name: "Client Context Window [Alt+Ctrl+C in a page]", url: "{{ testtarget_url }}/etc/clientcontext/default/content.html", valid_status_code: 200}
+      - {name: "MSM Rollout Configs Console", url: "{{ testtarget_url }}/miscadmin#/etc/msm/rolloutconfigs", valid_status_code: 200}
+      - {name: "Translator Settings", url: "{{ testtarget_url }}/libs/cq/i18n/translator.html", valid_status_code: 200}
+      - {name: "Bulk Editor", url: "{{ testtarget_url }}/etc/importers/bulkeditor.html", valid_status_code: 200}
+      - {name: "Feed Import Management", url: "{{ testtarget_url }}/miscadmin#/etc/importers", valid_status_code: 200}
+
+  - name: "Admin Consoles - Touch UI"
+    type:
+      - author
+    category: "General"
+    authenticated: true
+    user: "{{ admin_user }}"
+    password: "{{ admin_user }}"
+    tests:
+      - {name: "Touch UI Home Page", url: "{{ testtarget_url }}/projects.html", valid_status_code: 200}
+      - {name: "Siteadmin Console", url: "{{ testtarget_url }}/sites.html/content", valid_status_code: 200}
+      - {name: "DAM Console", url: "{{ testtarget_url }}/assets.html/content/dam", valid_status_code: 200}
+      - {name: "Useradmin Console", url: "{{ testtarget_url }}/libs/granite/security/content/useradmin.html", valid_status_code: 200}
+      - {name: "Groupadmin Console", url: "{{ testtarget_url }}/libs/granite/security/content/groupadmin.html", valid_status_code: 200}
+      - {name: "Offloading Admin Console", url: "{{ testtarget_url }}/libs/granite/offloading/content/view.html", valid_status_code: 200}
+      - {name: "Topology Admin Console", url: "{{ testtarget_url }}/libs/granite/topology/content/view.html", valid_status_code: 200}
+      - {name: "Health Reports Console", url: "{{ testtarget_url }}/libs/granite/operations/content/healthreports/healthreportlist.html", valid_status_code: 200}
+      - {name: "Diagnosis Console", url: "{{ testtarget_url }}/libs/granite/operations/content/diagnosis.html", valid_status_code: 200}
+      - {name: "Maintenance Console", url: "{{ testtarget_url }}/libs/granite/operations/content/maintenance.html", valid_status_code: 200}
+      - {name: "Cloud Services Console [To Connect to Adobe Marketing Cloud]", url: "{{ testtarget_url }}/etc/cloudservices.html", valid_status_code: 200}
+      - {name: "Distribution Console", url: "{{ testtarget_url }}/libs/granite/distribution/content/distribution.html", valid_status_code: 200}
+      - {name: "AEM Forms", url: "{{ testtarget_url }}/aem/forms.html/content/dam/formsanddocuments", valid_status_code: 200}
+      - {name: "Search Forms Window", url: "{{ testtarget_url }}/libs/cq/core/content/tools/customsearch/searchfacetformlister.html", valid_status_code: 200}
+
+  - name: "Admin Consoles - ACS AEM Commons"
+    type:
+      - author
+    category: "General"
+    authenticated: true
+    user: "{{ admin_user }}"
+    password: "{{ admin_user }}"
+    tests:
+      - {name: "JCR Compare", url: "{{ testtarget_url }}/etc/acs-commons/jcr-compare.html", valid_status_code: 200}
+      - {name: "Oak Index Manager", url: "{{ testtarget_url }}/etc/acs-commons/oak-index-manager.html", valid_status_code: 200}
+      - {name: "Version Compare", url: "{{ testtarget_url }}/etc/acs-commons/version-compare.html", valid_status_code: 200}
+      - {name: "Workflow Remover", url: "{{ testtarget_url }}/etc/acs-commons/workflow-remover.html", valid_status_code: 200}
+
+  - name: "Admin Consoles - General"
+    type:
+      - author
+    authenticated: true
+    user: "{{ admin_user }}"
+    password: "{{ admin_user }}"
+    category: "General"
+    tests:
+      - {name: "Login", url: "{{ testtarget_url }}/libs/granite/core/content/login.html", valid_status_code: 200}
+      - {name: "System Default Login", url: "{{ testtarget_url }}/system/sling/cqform/defaultlogin.html", valid_status_code: 200}
+
+  - name: "WebDav - Authenticated"
+    type:
+      - author
+      - publish
+      - dispatcher
+    authenticated: true
+    user: "{{ admin_user }}"
+    password: "{{ admin_user }}"
+    category: "General"
+    tests:
+      - {name: "Login", url: "{{ testtarget_url }}/crx/repository/crx.default/content/dam/", content: "<h2>/crx.default/content/dam</h2>", return_content: true, valid_status_code: 200}
+
+  - name: "WebDav - Anonymous"
+    type:
+      - author
+      - publish
+      - dispatcher
+    authenticated: false
+    category: "General"
+    tests:
+      - {name: "Login", url: "{{ testtarget_url }}/crx/repository/crx.default/content/dam/", valid_status_code: 401}
+
+  - name: "Sample Content"
+    type:
+      - author
+      - publish
+    authenticated: false
+    category: "General"
+    tests:
+      - {name: "Login", url: "{{ testtarget_url }}/content/geometrixx", valid_status_code: 401}
+      - {name: "Login", url: "{{ testtarget_url }}/content/weretail", valid_status_code: 401}
+
+  - name: "Content Globing Root"
+    type:
+      - dispatcher
+    authenticated: false
+    category: "General"
+    tests:
+      - {name: "root json", url: "{{ testtarget_url }}/.json", valid_status_code: 404}
+      - {name: "root json", url: "{{ testtarget_url }}/.1.json", valid_status_code: 404}
+      - {name: "root json", url: "{{ testtarget_url }}/.childrenlist.json", valid_status_code: 404}
+      - {name: "root json", url: "{{ testtarget_url }}/.ext.json", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/.4.2.1...json", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/.json/a.css", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/.json/a.html", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/.json/a.png", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/.json/a.ico", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/.json;%0aa.css", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/.json;%0aa.html", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/.json;%0aa.png", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/.json;%0aa.ico", valid_status_code: 404}
+
+  - name: "Content Globing Content"
+    type:
+      - dispatcher
+    authenticated: false
+    category: "General"
+    tests:
+      - {name: "root json", url: "{{ testtarget_url }}/content/.json", valid_status_code: 404}
+      - {name: "root json", url: "{{ testtarget_url }}/content/.1.json", valid_status_code: 404}
+      - {name: "root json", url: "{{ testtarget_url }}/content/.childrenlist.json", valid_status_code: 404}
+      - {name: "root json", url: "{{ testtarget_url }}/content/.ext.json", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/content/.4.2.1...json", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/content/.json/a.css", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/content/.json/a.html", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/content/.json/a.png", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/content/.json/a.ico", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/content/.json;%0aa.css", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/content/.json;%0aa.html", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/content/.json;%0aa.png", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/content/.json;%0aa.ico", valid_status_code: 404}
+
+  - name: "Content Globing Bin"
+    type:
+      - dispatcher
+    authenticated: false
+    category: "General"
+    tests:
+      - {name: "root json", url: "{{ testtarget_url }}/bin/.json", valid_status_code: 404}
+      - {name: "root json", url: "{{ testtarget_url }}/bin/.1.json", valid_status_code: 404}
+      - {name: "root json", url: "{{ testtarget_url }}/bin/.childrenlist.json", valid_status_code: 404}
+      - {name: "root json", url: "{{ testtarget_url }}/bin/.ext.json", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/bin/.4.2.1...json", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/bin/.json/a.css", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/bin/.json/a.html", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/bin/.json/a.png", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/bin/.json/a.ico", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/bin/.json;%0aa.css", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/bin/.json;%0aa.html", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/bin/.json;%0aa.png", valid_status_code: 404}
+      - {name: "root json filter bypass", url: "{{ testtarget_url }}/bin/.json;%0aa.ico", valid_status_code: 404}
+
+  - name: "Content Globing Bin Dispatcher Bypass"
+    type:
+      - dispatcher
+    authenticated: false
+    category: "Dispatcher Bypass"
+    tests:
+      - {name: "root json", url: "{{ testtarget_url }}///bin/.json", valid_status_code: 404}
+      - {name: "root json", url: "{{ testtarget_url }}///bin/.1.json", valid_status_code: 404}
+      - {name: "root json", url: "{{ testtarget_url }}///bin/.childrenlist.json", valid_status_code: 404}
+      - {name: "root json", url: "{{ testtarget_url }}///bin/.ext.json", valid_status_code: 404}
+      - {name: "root json dispatcher bypass", url: "{{ testtarget_url }}///bin/.4.2.1...json", valid_status_code: 404}
+      - {name: "root json dispatcher bypass", url: "{{ testtarget_url }}///bin/.json/a.css", valid_status_code: 404}
+      - {name: "root json dispatcher bypass", url: "{{ testtarget_url }}///bin/.json/a.html", valid_status_code: 404}
+      - {name: "root json dispatcher bypass", url: "{{ testtarget_url }}///bin/.json/a.png", valid_status_code: 404}
+      - {name: "root json dispatcher bypass", url: "{{ testtarget_url }}///bin/.json/a.ico", valid_status_code: 404}
+      - {name: "root json dispatcher bypass", url: "{{ testtarget_url }}///bin/.json;%0aa.css", valid_status_code: 404}
+      - {name: "root json dispatcher bypass", url: "{{ testtarget_url }}///bin/.json;%0aa.html", valid_status_code: 404}
+      - {name: "root json dispatcher bypass", url: "{{ testtarget_url }}///bin/.json;%0aa.png", valid_status_code: 404}
+      - {name: "root json dispatcher bypass", url: "{{ testtarget_url }}///bin/.json;%0aa.ico", valid_status_code: 404}
+
+  - name: "Content Globing"
+    type:
+      - dispatcher
+    authenticated: false
+    category: "General"
+    tests:
+      - {name: "WCM Commands", url: "{{ testtarget_url }}/bin/wcmcommand?cmd=open&path=/content&jsonMode=true", valid_status_code: 401}
+      - {name: "Query Builder", url: "{{ testtarget_url }}/bin/querybuilder.json", valid_status_code: 401}
+      - {name: "Site Admin", url: "{{ testtarget_url }}/bin/wcm/siteadmin/tree.json?path=/content", valid_status_code: 401}
+      - {name: "System Bundles", url: "{{ testtarget_url }}/system/console/bundles.json", valid_status_code: 401}
+      - {name: "Replication", url: "{{ testtarget_url }}/etc/replication/treeactivation.html", valid_status_code: 401}
+      - {name: "Assets Listing", url: "{{ testtarget_url }}/content/dam.assets.json", valid_status_code: 401}
+      - {name: "Page Listing", url: "{{ testtarget_url }}/content.pages.json", valid_status_code: 401}
+
+  - name: "Content Access"
+    type:
+      - dispatcher
+    authenticated: false
+    category: "General"
+    tests:
+      - {name: "System Console", url: "{{ testtarget_url }}/admin", valid_status_code: 401}
+      - {name: "System Console", url: "{{ testtarget_url }}/system/console", valid_status_code: 401}
+      - {name: "Web Dav", url: "{{ testtarget_url }}/dav/crx.default", valid_status_code: 401}
+      - {name: "CRX Web Console", url: "{{ testtarget_url }}/crx", valid_status_code: 401}
+      - {name: "CRX Web Console", url: "{{ testtarget_url }}/bin/crxde/logs", valid_status_code: 401}
+      - {name: "Version Infromation", url: "{{ testtarget_url }}/jcr:system/jcr:versionStorage.json", valid_status_code: 401}
+      - {name: "Version Infromation", url: "{{ testtarget_url }}/_jcr_system/_jcr_versionStorage.json", valid_status_code: 401}
+      - {name: "Site Admin", url: "{{ testtarget_url }}/libs/wcm/core/content/siteadmin.html", valid_status_code: 401}
+      - {name: "Client Libs Debug", url: "{{ testtarget_url }}/libs/cq/ui/content/dumplibs.html", valid_status_code: 401}
+      - {name: "Link Checker /var", url: "{{ testtarget_url }}/var/linkchecker.html", valid_status_code: 401}
+      - {name: "Link Checker /etc", url: "{{ testtarget_url }}/etc/linkchecker.html", valid_status_code: 401}
+      - {name: "Admin User Profile", url: "{{ testtarget_url }}/home/users/a/admin/profile.json", valid_status_code: 401}
+      - {name: "Admin User Profile", url: "{{ testtarget_url }}/home/users/a/admin/profile.xml", valid_status_code: 401}
+      - {name: "Default Login", url: "{{ testtarget_url }}/libs/cq/core/content/login.json", valid_status_code: 401}
+      - {name: "Libs Components via Content", url: "{{ testtarget_url }}/content/../libs/foundation/components/text/text.jsp", valid_status_code: 401}
+      - {name: "Libs Components via Content", url: "{{ testtarget_url }}/content/.{.}/libs/foundation/components/text/text.jsp", valid_status_code: 401}
+      - {name: "Application Config", url: "{{ testtarget_url }}/apps/sling/config/org.apache.felix.webconsole.internal.servlet.OsgiManager.config/jcr%3acontent/jcr%3adata", valid_status_code: 401}
+      - {name: "Libs Components", url: "{{ testtarget_url }}/libs/foundation/components/primary/cq/workflow/components/participants/json.GET.servlet", valid_status_code: 401}
+      - {name: "Selector - Pages", url: "{{ testtarget_url }}/content.pages.json", valid_status_code: 401}
+      - {name: "Selector - Languages", url: "{{ testtarget_url }}/content.languages.json", valid_status_code: 401}
+      - {name: "Selector - Blueprint", url: "{{ testtarget_url }}/content.blueprint.json", valid_status_code: 401}
+      - {name: "Selector - Content List -1", url: "{{ testtarget_url }}/content.-1.json", valid_status_code: 401}
+      - {name: "Selector - Content List 10", url: "{{ testtarget_url }}/content.10.json", valid_status_code: 401}
+      - {name: "Selector - Content List Infinity", url: "{{ testtarget_url }}/content.infinity.json", valid_status_code: 401}
+      - {name: "Selector - Tidy Json", url: "{{ testtarget_url }}/content.tidy.json", valid_status_code: 401}
+      - {name: "Selector - Invalid Page", url: "{{ testtarget_url }}/content.tidy.-1.blubber.json", valid_status_code: 401}
+      - {name: "Selector - Dam Json", url: "{{ testtarget_url }}/content/dam.tidy.-100.json", valid_status_code: 401}
+      - {name: "Sitemap Geo", url: "{{ testtarget_url }}/content/content/geometrixx.sitemap.txt", valid_status_code: 401}
+      - {name: "Page Query plain", url: "{{ testtarget_url }}/content/we-retail.query.json?statement=//*", valid_status_code: 401}
+      - {name: "Page Query unicode", url: "{{ testtarget_url }}/content/we-retail.qu%65ry.js%6Fn?statement=//*", valid_status_code: 401}
+      - {name: "Page Query statement",
+         url: "{{ testtarget_url }}/content/we-retail.query.json?statement=//*[@transportPassword]/(@transportPassword%20|%20@transportUri%20|%20@transportUser)",
+         valid_status_code: 401}
+      - {name: "Page content json long", url: "{{ testtarget_url }}/content/we-retail/us/en/_jcr_content.json", valid_status_code: 401}
+      - {name: "Page content json short", url: "{{ testtarget_url }}/content/we-retail/us/en/jcr:content.json", valid_status_code: 401}
+      - {name: "Page content feed long", url: "{{ testtarget_url }}/content/we-retail/us/en/_jcr_content.feed", valid_status_code: 401}
+      - {name: "Page content feed short", url: "{{ testtarget_url }}/content/we-retail/us/en/jcr:content.feed", valid_status_code: 401}
+      - {name: "Page content feed direct long", url: "{{ testtarget_url }}/content/we-retail/us/en._jcr_content.feed", valid_status_code: 401}
+      - {name: "Page content feed direct short", url: "{{ testtarget_url }}/content/we-retail/us/en.jcr:content.feed", valid_status_code: 401}
+      - {name: "Doc View XML", url: "{{ testtarget_url }}/content/we-retail/us/en.docview.xml", valid_status_code: 401}
+      - {name: "Doc View Json", url: "{{ testtarget_url }}/content/we-retail/us/en.docview.json", valid_status_code: 401}
+      - {name: "SysView", url: "{{ testtarget_url }}/content/we-retail/us/en.sysview.xml", valid_status_code: 401}
+      - {name: "Etc xml", url: "{{ testtarget_url }}/etc.xml", valid_status_code: 401}
+      - {name: "Content Feed", url: "{{ testtarget_url }}/content.feed.xml", valid_status_code: 401}
+      - {name: "Content RSS", url: "{{ testtarget_url }}/content.rss.xml", valid_status_code: 401}
+      - {name: "Content Feed html", url: "{{ testtarget_url }}/content.feed.html", valid_status_code: 401}
+      - {name: "Sample Content", url: "{{ testtarget_url }}/content/we-retail.html", valid_status_code: 401}
+
+  - name: "Content Creation"
+    type:
+      - author
+      - publish
+      - dispatcher
+      - writetest
+    authenticated: false
+    category: "General"
+    tests:
+      - {name: "Write content without login", url: "{{ testtarget_url }}/content", body: "writetest=success", method: "POST", valid_status_code: 401}
+      - {name: "Create test attribute", url: "{{ testtarget_url }}/content", body: "writetest=success", method: "POST", user: "admin", password: "{{ admin_password }}", valid_status_code: 200}
+      - {name: "Remove test attribute", url: "{{ testtarget_url }}/content", body: "writetest@Delete", method: "POST", user: "admin", password: "{{ admin_password }}", valid_status_code: 200}
+
+  - name: "Dispatcher Services"
+    type:
+      - dispatcher
+    authenticated: false
+    category: "Dispatcher Services"
+    tests:
+      - {name: "Invalidate Cache", url: "{{ testtarget_url }}/dispatcher/invalidate.cache",
+         headers: {CQ-Handle: "/content", CQ-Path: "/content"},
+         user: "admin", password: "{{ admin_password }}", valid_status_code: 401}

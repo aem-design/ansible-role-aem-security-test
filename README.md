@@ -14,7 +14,37 @@ None.
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
-    test_url: http://localhost:8080
+    testtarget_url: "http://localhost:4502"
+    is_admin_password_default: false
+    admin_user: admin
+    admin_password: admin
+    test_group_list:
+      - name: "Projects Access"
+        type:
+          - author
+        authenticated: true
+        category: "General"
+        url: "{{ testtarget_url }}/projects.html"
+        tests:
+          - { 
+            name: "Name of Test",
+            user: "admin", 
+            password: "{{ admin_password }}", 
+            valid_status_code: "{{ 200 if (is_admin_password_default) else 401 }}" 
+            body: "writetest=success", 
+            method: "POST",
+            headers: { CQ-Handle: "/content", CQ-Path: "/content"}
+            }
+
+Running ansible with variables will 
+
+This will indicate that you have a default admin:admin login creds
+
+     -e is_admin_password_default=true
+
+This will indicate that you want to only run writetest
+
+    -e type=writetest
 
 
 ## Dependencies
@@ -26,7 +56,7 @@ None.
 ```yaml
 - hosts: all
   roles:
-    - geerlingguy.docker
+    - aemdesign.aem-security-test
 ```
 
 ## License

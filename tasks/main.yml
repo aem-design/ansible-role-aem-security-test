@@ -1,6 +1,8 @@
 ---
 
-- name: aem security test
-  debug:
-    msg:
-      - "testing"
+- name: "test"
+  include: "check_uri.yml"
+  when: type in item.0.type
+  with_subelements:
+    - "{{ test_group_list}}"
+    - tests
