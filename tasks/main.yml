@@ -2,7 +2,7 @@
 
 - name: "test"
   include: "check_uri.yml"
-  when: type in item.0.type
+  when: item.0.type is superset(type)
   with_subelements:
-    - "{{ test_group_list}}"
+    - "{{ test_group_list }}"
     - tests

@@ -1,7 +1,7 @@
 ---
 - name: testing {{ item.0.url if item.0.url is defined else item.1.url }}
   set_fact:
-    uri_info: "{{item}}"
+    uri_info: "{{ item }}"
     task_comment: "{{ item.0.name | default('Category') }} - {{ item.1.name | default('Test') }} {{ item.0.url if item.0.url is defined else item.1.url }}"
     test_output_content: "{{ item.1.content is defined }}"
     test_output_status: "{{ item.1.content is not defined }}"
@@ -18,7 +18,7 @@
 - name: access test url {{ task_comment }}
   uri:
     url: "{{ uri_info.0.url if uri_info.0.url is defined else uri_info.1.url }}"
-    return_content: "{{ uri_info.1.return_content | default('no') }}"
+    return_content: "{{ uri_info.1.return_content | default('false') }}"
     timeout: "{{ uri_info.1.timeout | default(5) }}"
     method: "{{ uri_info.1.method | default('GET') }}"
     headers: "{{ uri_info.1.headers | default({}) }}"
