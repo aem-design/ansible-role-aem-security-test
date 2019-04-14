@@ -4,7 +4,9 @@ services: docker
 
 env:
   global:
+    - ROLE_REPO_NAME: aem-security-test
     - ROLE_NAME: aem_security_test
+    - ROLE_NAMESPACE: aem_design
   matrix:
     - MOLECULE_DISTRO: centos7
     - MOLECULE_DISTRO: ubuntu1804
@@ -20,8 +22,8 @@ install:
 before_script:
   # Use actual Ansible Galaxy role name for the project directory.
   - cd ../
-  - mv ansible-role-$ROLE_NAME aem_design.$ROLE_NAME
-  - cd aem_design.$ROLE_NAME
+  - mv ansible-role-$ROLE_REPO_NAME $ROLE_NAMESPACE.$ROLE_NAME
+  - cd $ROLE_NAMESPACE.$ROLE_NAME
 
 script:
   # Run tests.
