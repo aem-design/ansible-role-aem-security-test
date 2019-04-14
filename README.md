@@ -111,7 +111,7 @@ None.
 ```yaml
 - hosts: all
   roles:
-    - aemdesign.aem-security-test
+    - aem_design.aem_security_test
 ```
 
 ## License
