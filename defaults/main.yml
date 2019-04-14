@@ -1,5 +1,5 @@
 ---
-# defaults file for aem-security-test
+# defaults file for aem_security_test
 
 test_target_url: "http://localhost:4502"
 is_admin_password_default: false

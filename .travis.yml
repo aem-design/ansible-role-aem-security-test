@@ -4,7 +4,7 @@ services: docker
 
 env:
   global:
-    - ROLE_NAME: aem-security-test
+    - ROLE_NAME: aem_security_test
   matrix:
     - MOLECULE_DISTRO: centos7
     - MOLECULE_DISTRO: ubuntu1804
