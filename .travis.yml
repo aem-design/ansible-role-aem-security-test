@@ -20,8 +20,8 @@ install:
 before_script:
   # Use actual Ansible Galaxy role name for the project directory.
   - cd ../
-  - mv ansible-role-$ROLE_NAME aemdesign.$ROLE_NAME
-  - cd aemdesign.$ROLE_NAME
+  - mv ansible-role-$ROLE_NAME aem_design.$ROLE_NAME
+  - cd aem_design.$ROLE_NAME
 
 script:
   # Run tests.
