@@ -9,4 +9,4 @@
       when: ansible_os_family == 'Debian'
 
   roles:
-    - role: aemdesign.aem-security-test
+    - role: aem_design.aem_security_test
