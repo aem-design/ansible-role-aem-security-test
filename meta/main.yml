@@ -1,5 +1,6 @@
 ---
 galaxy_info:
+  role_name: aem-security-test
   author: Max Barrass
   description: Tests AEM Dispatcher instance for specific Security patterns.
   company: aem.design
