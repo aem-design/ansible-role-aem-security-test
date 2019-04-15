@@ -12,3 +12,5 @@ def test_hosts_file(host):
     assert f.exists
     assert f.user == 'root'
     assert f.group == 'root'
+
+# nothing to test as this role test hosts
