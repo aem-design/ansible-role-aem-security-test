@@ -34,6 +34,22 @@
     }
     - {
       role: "{{ role_name }}",
+      aem_port: "5502",
+      aem_host: "{{ dockerhost_ip.stdout }}",
+      debug_hide: "false",
+      simple_name: "acs-aem-commons-content",
+      group_name: "adobe/consulting",
+      package_version: "4.3.0",
+      package_name: "acs-aem-commons-content",
+      package_url: "https://github.com/Adobe-Consulting-Services/acs-aem-commons/releases/download/\
+        acs-aem-commons-4.3.0/acs-aem-commons-content-4.3.0.zip",
+      file_name: "acs-aem-commons-content-4.3.0.zip",
+      install_package_ansible: false,
+      install_package_docker: true,
+      docker_host: "unix://tmp/docker.sock"
+    }
+    - {
+      role: "{{ role_name }}",
       test_target_url: "http://{{ dockerhost_ip.stdout }}:5502",
       is_admin_password_default: "false",
       admin_user: "admin",
