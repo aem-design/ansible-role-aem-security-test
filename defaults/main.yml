@@ -3,8 +3,8 @@
 
 test_target_url: "http://localhost:4502"
 is_admin_password_default: false
-admin_user: admin
-admin_password: admin
+aem_username: admin
+aem_password: admin
 type:
   - author
   - publish
@@ -20,7 +20,7 @@ test_group_list:
     category: "General"
     url: "{{ test_target_url }}/projects.html"
     tests:
-      - {user: "admin", password: "{{ admin_password }}", valid_status_code: "{{ 200 if (is_admin_password_default) else 401 }}"}
+      - {user: "admin", password: "{{ aem_password }}", valid_status_code: "{{ 200 if (is_admin_password_default) else 401 }}"}
       - {user: "author", password: "author", valid_status_code: 401}
       - {user: "jdoe@geometrixx.info", password: "jdoe", valid_status_code: 401}
       - {user: "replication-receiver", password: "replication-receiver", valid_status_code: 401}
@@ -28,8 +28,8 @@ test_group_list:
   - name: "Admin Consoles - General"
     type:
       - author
-    user: "{{ admin_user }}"
-    password: "{{ admin_user }}"
+    user: "{{ aem_username }}"
+    password: "{{ aem_password }}"
     tests:
       - {name: "CRXDE Lite", url: "{{ test_target_url }}/crx/de/index.jsp", valid_status_code: 200}
       - {name: "CRX Explorer", url: "{{ test_target_url }}/crx/explorer/index.jsp", valid_status_code: 200}
@@ -54,8 +54,8 @@ test_group_list:
   - name: "Admin Consoles - Classic UI"
     type:
       - author
-    user: "{{ admin_user }}"
-    password: "{{ admin_user }}"
+    user: "{{ aem_username }}"
+    password: "{{ aem_password }}"
     tests:
       - {name: "Classic UI Home Page Redirected", url: "{{ test_target_url }}/welcome.html", valid_status_code: 200}
       - {name: "Classic UI Home Page", url: "{{ test_target_url }}/libs/cq/core/content/welcome.html", valid_status_code: 200}
@@ -81,8 +81,8 @@ test_group_list:
   - name: "Admin Consoles - Touch UI"
     type:
       - author
-    user: "{{ admin_user }}"
-    password: "{{ admin_user }}"
+    user: "{{ aem_username }}"
+    password: "{{ aem_password }}"
     tests:
       - {name: "Touch UI Home Page", url: "{{ test_target_url }}/projects.html", valid_status_code: 200}
       - {name: "Siteadmin Console", url: "{{ test_target_url }}/sites.html/content", valid_status_code: 200}
@@ -102,8 +102,8 @@ test_group_list:
   - name: "Admin Consoles - ACS AEM Commons"
     type:
       - author
-    user: "{{ admin_user }}"
-    password: "{{ admin_user }}"
+    user: "{{ aem_username }}"
+    password: "{{ aem_password }}"
     tests:
       - {name: "JCR Compare", url: "{{ test_target_url }}/etc/acs-commons/jcr-compare.html", valid_status_code: 200}
       - {name: "Oak Index Manager", url: "{{ test_target_url }}/etc/acs-commons/oak-index-manager.html", valid_status_code: 200}
@@ -113,8 +113,8 @@ test_group_list:
   - name: "Admin Consoles - General"
     type:
       - author
-    user: "{{ admin_user }}"
-    password: "{{ admin_user }}"
+    user: "{{ aem_username }}"
+    password: "{{ aem_password }}"
     tests:
       - {name: "Login", url: "{{ test_target_url }}/libs/granite/core/content/login.html", valid_status_code: 200}
       - {name: "System Default Login", url: "{{ test_target_url }}/system/sling/cqform/defaultlogin.html", valid_status_code: 200}
@@ -124,8 +124,8 @@ test_group_list:
       - author
       - publish
       - dispatcher
-    user: "{{ admin_user }}"
-    password: "{{ admin_user }}"
+    user: "{{ aem_username }}"
+    password: "{{ aem_password }}"
     tests:
       - {name: "Login", url: "{{ test_target_url }}/crx/repository/crx.default/content/dam/", content: "<h2>/crx.default/content/dam</h2>", return_content: true, valid_status_code: 200}
 
@@ -298,8 +298,8 @@ test_group_list:
     authenticated: false
     tests:
       - {name: "Write content without login", url: "{{ test_target_url }}/content", body: "writetest=success", method: "POST", valid_status_code: 401}
-      - {name: "Create test attribute", url: "{{ test_target_url }}/content", body: "writetest=success", method: "POST", user: "admin", password: "{{ admin_password }}", valid_status_code: 200}
-      - {name: "Remove test attribute", url: "{{ test_target_url }}/content", body: "writetest@Delete", method: "POST", user: "admin", password: "{{ admin_password }}", valid_status_code: 200}
+      - {name: "Create test attribute", url: "{{ test_target_url }}/content", body: "writetest=success", method: "POST", user: "admin", password: "{{ aem_password }}", valid_status_code: 200}
+      - {name: "Remove test attribute", url: "{{ test_target_url }}/content", body: "writetest@Delete", method: "POST", user: "admin", password: "{{ aem_password }}", valid_status_code: 200}
 
   - name: "Dispatcher Services"
     type:
@@ -309,4 +309,4 @@ test_group_list:
     tests:
       - {name: "Invalidate Cache", url: "{{ test_target_url }}/dispatcher/invalidate.cache",
          headers: {CQ-Handle: "/content", CQ-Path: "/content"},
-         user: "admin", password: "{{ admin_password }}", valid_status_code: 401}
+         user: "admin", password: "{{ aem_password }}", valid_status_code: 401}
