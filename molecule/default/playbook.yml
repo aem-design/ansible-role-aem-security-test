@@ -5,6 +5,9 @@
   vars:
     local_role_name: "ansible-role-aem-security-test"
     role_name: "{% if lookup('env','ROLE_NAME_FULL') %}{{ lookup('env','ROLE_NAME_FULL') }}{% else %}{{ local_role_name }}{% endif %}"
+    test_aem_port: "5502"
+    test_aem_username: "admin"
+    test_aem_password: "admin"
 
   pre_tasks:
     - name: get docker host ip
@@ -22,19 +25,21 @@
       role: "aem_design.aem_license",
       aem_license_key: "{{ service_aem_license_key }}",
       aem_license_name: "{{ service_aem_license_name }}",
-      aem_port: "5502",
+      aem_port: "{{ test_aem_port }}",
       aem_host: "{{ dockerhost_ip.stdout }}",
       debug_hide: false
     }
     - {
       role: "aem_design.aem_verify",
-      aem_port: "5502",
+      aem_username: "{{ test_aem_username }}",
+      aem_password: "{{ test_aem_password }}",
+      aem_port: "{{ test_aem_port }}",
       aem_host: "{{ dockerhost_ip.stdout }}",
       debug_hide: false
     }
     - {
-      role: "{{ role_name }}",
-      aem_port: "5502",
+      role: "aem_design.aem_package",
+      aem_port: "{{ test_aem_port }}",
       aem_host: "{{ dockerhost_ip.stdout }}",
       debug_hide: "false",
       simple_name: "acs-aem-commons-content",
@@ -50,10 +55,10 @@
     }
     - {
       role: "{{ role_name }}",
-      test_target_url: "http://{{ dockerhost_ip.stdout }}:5502",
+      test_target_url: "http://{{ dockerhost_ip.stdout }}:{{ test_aem_port }}",
       is_admin_password_default: "false",
-      admin_user: "admin",
-      admin_password: "admin",
+      aem_username: "{{ test_aem_username }}",
+      aem_password: "{{ test_aem_password }}",
       debug_hide: false,
       type: [
         author
