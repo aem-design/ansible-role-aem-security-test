@@ -20,49 +20,32 @@
       register: dockerhost_ip
       changed_when: false
 
-  roles:
-    - {
-      role: "aem_design.aem_license",
-      aem_license_key: "{{ service_aem_license_key }}",
-      aem_license_name: "{{ service_aem_license_name }}",
-      aem_port: "{{ test_aem_port }}",
-      aem_host: "{{ dockerhost_ip.stdout }}",
-      wait_retries: "600",
-      wait_delay: "5",
-      debug_hide: false
-    }
-    - {
-      role: "aem_design.aem_verify",
-      aem_username: "{{ test_aem_username }}",
-      aem_password: "{{ test_aem_password }}",
-      aem_port: "{{ test_aem_port }}",
-      aem_host: "{{ dockerhost_ip.stdout }}",
-      debug_hide: false
-    }
-    - {
-      role: "aem_design.aem_package",
-      aem_port: "{{ test_aem_port }}",
-      aem_host: "{{ dockerhost_ip.stdout }}",
-      debug_hide: "false",
-      simple_name: "acs-aem-commons-content",
-      group_name: "adobe/consulting",
-      package_version: "4.3.0",
-      package_name: "acs-aem-commons-content",
-      package_url: "https://github.com/Adobe-Consulting-Services/acs-aem-commons/releases/download/\
-        acs-aem-commons-4.3.0/acs-aem-commons-content-4.3.0.zip",
-      file_name: "acs-aem-commons-content-4.3.0.zip",
-      install_package_ansible: false,
-      install_package_docker: true,
-      docker_host: "unix://tmp/docker.sock"
-    }
-    - {
-      role: "{{ role_name }}",
-      test_target_url: "http://{{ dockerhost_ip.stdout }}:{{ test_aem_port }}",
-      is_admin_password_default: "false",
-      aem_username: "{{ test_aem_username }}",
-      aem_password: "{{ test_aem_password }}",
-      debug_hide: false,
-      type: [
-        author
-      ]
-    }
+  tasks:
+    - name: register aem
+      include_role:
+        name: "aem_design.aem_license"
+        aem_license_key: "{{ service_aem_license_key }}"
+        aem_license_name: "{{ service_aem_license_name }}"
+        aem_port: "{{ test_aem_port }}"
+        aem_host: "{{ dockerhost_ip.stdout }}"
+        wait_retries: "600"
+        wait_delay: "5"
+        debug_hide: false
+    - name: verify aem is ready
+      include_role:
+        name: "aem_design.aem_verify"
+        aem_username: "{{ test_aem_username }}"
+        aem_password: "{{ test_aem_password }}"
+        aem_port: "{{ test_aem_port }}"
+        aem_host: "{{ dockerhost_ip.stdout }}"
+        debug_hide: false
+    - name: run tests
+      include_role:
+        name: "{{ role_name }}"
+        test_target_url: "http://{{ dockerhost_ip.stdout }}:{{ test_aem_port }}"
+        is_admin_password_default: "false"
+        aem_username: "{{ test_aem_username }}"
+        aem_password: "{{ test_aem_password }}"
+        debug_hide: false
+        type:
+          - author
