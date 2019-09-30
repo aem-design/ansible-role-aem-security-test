@@ -41,6 +41,23 @@
         aem_port: "{{ test_aem_port }}"
         aem_host: "{{ dockerhost_ip.stdout }}"
         debug_hide: false
+    - name: install packages
+      include_role:
+        name: "aem_design.aem_package"
+      vars:
+        aem_port: "{{ test_aem_port }}"
+        aem_host: "{{ dockerhost_ip.stdout }}"
+        debug_hide: "false"
+        simple_name: "acs-aem-commons-content"
+        group_name: "adobe/consulting"
+        package_version: "4.3.0"
+        package_name: "acs-aem-commons-content"
+        package_url: "https://github.com/Adobe-Consulting-Services/acs-aem-commons/releases/download/\
+        acs-aem-commons-4.3.0/acs-aem-commons-content-4.3.0.zip"
+        file_name: "acs-aem-commons-content-4.3.0.zip"
+        install_package_ansible: false
+        install_package_docker: true
+        docker_host: "unix://tmp/docker.sock"
     - name: run tests
       include_role:
         name: "{{ role_name }}"
