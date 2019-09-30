@@ -27,6 +27,8 @@
       aem_license_name: "{{ service_aem_license_name }}",
       aem_port: "{{ test_aem_port }}",
       aem_host: "{{ dockerhost_ip.stdout }}",
+      wait_retries: "600",
+      wait_delay: "5",
       debug_hide: false
     }
     - {

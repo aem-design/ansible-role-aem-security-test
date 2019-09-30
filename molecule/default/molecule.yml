@@ -30,7 +30,7 @@ platforms:
     privileged: true
     pre_build_image: true
   - name: aemtest
-    image: "aemdesign/aem:6.5.0"
+    image: "aemdesign/aem:6.5.0-bundle"
     command: ""
     published_ports:
       - 5502:8080
