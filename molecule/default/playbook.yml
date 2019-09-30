@@ -24,6 +24,7 @@
     - name: register aem
       include_role:
         name: "aem_design.aem_license"
+      vars:
         aem_license_key: "{{ service_aem_license_key }}"
         aem_license_name: "{{ service_aem_license_name }}"
         aem_port: "{{ test_aem_port }}"
@@ -34,6 +35,7 @@
     - name: verify aem is ready
       include_role:
         name: "aem_design.aem_verify"
+      vars:
         aem_username: "{{ test_aem_username }}"
         aem_password: "{{ test_aem_password }}"
         aem_port: "{{ test_aem_port }}"
@@ -42,6 +44,7 @@
     - name: run tests
       include_role:
         name: "{{ role_name }}"
+      vars:
         test_target_url: "http://{{ dockerhost_ip.stdout }}:{{ test_aem_port }}"
         is_admin_password_default: "false"
         aem_username: "{{ test_aem_username }}"
