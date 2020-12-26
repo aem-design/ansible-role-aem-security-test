@@ -127,7 +127,7 @@ test_group_list:
     user: "{{ aem_username }}"
     password: "{{ aem_password }}"
     tests:
-      - {name: "Login", url: "{{ test_target_url }}/crx/repository/crx.default/content/dam/", content: "<h2>/crx.default/content/dam</h2>", return_content: true, valid_status_code: 200}
+      - {name: "Login", url: "{{ test_target_url }}/crx/repository/aem.default/content/dam/", content: "<h2>/aem.default/content/dam</h2>", return_content: true, valid_status_code: 200}
 
   - name: "WebDav - Anonymous"
     type:
@@ -136,7 +136,7 @@ test_group_list:
       - dispatcher
     authenticated: false
     tests:
-      - {name: "Login", url: "{{ test_target_url }}/crx/repository/crx.default/content/dam/", valid_status_code: 401}
+      - {name: "Login", url: "{{ test_target_url }}/crx/repository/aem.default/content/dam/", valid_status_code: 401}
 
   - name: "Sample Content"
     type:
@@ -243,7 +243,7 @@ test_group_list:
     tests:
       - {name: "System Console", url: "{{ test_target_url }}/admin", valid_status_code: 401}
       - {name: "System Console", url: "{{ test_target_url }}/system/console", valid_status_code: 401}
-      - {name: "Web Dav", url: "{{ test_target_url }}/dav/crx.default", valid_status_code: 401}
+      - {name: "Web Dav", url: "{{ test_target_url }}/dav/aem.default", valid_status_code: 401}
       - {name: "CRX Web Console", url: "{{ test_target_url }}/crx", valid_status_code: 401}
       - {name: "CRX Web Console", url: "{{ test_target_url }}/bin/crxde/logs", valid_status_code: 401}
       - {name: "Version Infromation", url: "{{ test_target_url }}/jcr:system/jcr:versionStorage.json", valid_status_code: 401}
